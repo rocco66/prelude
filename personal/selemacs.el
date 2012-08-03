@@ -69,7 +69,13 @@ A place is considered `tab-width' character columns."
   (interactive)
   (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen"))
 
+(defun run-prog-hook ()
+  (interactive)
+  (run-hooks 'prog-hook))
+
+
 ;; REQUIRES
+
 (require 'smex)
 (smex-initialize)
 
@@ -133,9 +139,26 @@ A place is considered `tab-width' character columns."
                                     (number-to-string line))
                                    'face 'linum))))))
 
+(setq
+ cursor-in-non-selected-windows nil
+ use-dialog-box nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; whenever an external process changes a file underneath emacs, and
 ;; there was no unsaved changes in the corresponding buffer, just
 ;; revert its content to reflect what's on-disk.
 (global-auto-revert-mode 1)
+
+;; ERLANG
+(setq erlang-root-dir "/usr/local/lib/erlang")
+
+(add-to-list 'load-path
+             (concat erlang-root-dir "/lib/tools-2.6.6.6/emacs"))
+(add-to-list 'exec-path
+             (concat erlang-root-dir "/bin"))
+
+(add-to-list 'ac-modes 'erlang-mode)
+
+(add-hook 'erlang-mode-hook 'run-prog-hook)
+
+(require 'erlang-start)
