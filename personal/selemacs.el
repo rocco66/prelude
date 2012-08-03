@@ -59,6 +59,7 @@
 (add-hook 'coding-hook 'turn-on-linum)
 (add-hook 'coding-hook 'auto-complete-mode)
 (add-hook 'coding-hook 'rainbow-delimiters-mode)
+(add-hook 'prelude-prog-mode-hook 'auto-complete-mode)
 
 (defun what-face (pos)
   (interactive "d")
@@ -68,7 +69,6 @@
 
 (defun textmate-shift-right (&optional arg)
   "Shift the line or region to the ARG places to the right.
-
 A place is considered `tab-width' character columns."
   (interactive)
   (let ((deactivate-mark nil)
@@ -84,8 +84,8 @@ A place is considered `tab-width' character columns."
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-x C-z") nil) ;; I hate that suspend feature
 
-(global-set-key (kbd "C-S-.") 'textmate-shift-right)
-(global-set-key (kbd "C-S-,") 'textmate-shift-left)
+(global-set-key (kbd "C->") 'textmate-shift-right)
+(global-set-key (kbd "C-<") 'textmate-shift-left)
 
 (require 'smex)
 (smex-initialize)
@@ -111,6 +111,19 @@ A place is considered `tab-width' character columns."
 (desktop-save-mode 1)
 
 (mouse-avoidance-mode 'cat-and-mouse)
+
+(add-hook 'linum-before-numbering-hook
+          (lambda ()
+            (let ((w (length (number-to-string
+                              (count-lines (point-min) (point-max))))))
+              (setq linum-format
+                    `(lambda (line)
+                       (propertize (concat
+                                    (truncate-string-to-width
+                                     "" (- ,w (length (number-to-string line)))
+                                     nil ?\x2007)
+                                    (number-to-string line))
+                                   'face 'linum))))))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
