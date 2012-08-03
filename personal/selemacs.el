@@ -46,7 +46,11 @@
 (defun disable-guru-mode ()
   (guru-mode -1))
 
+(defun disable-flyspell-mode ()
+  (flyspell-mode -1))
+
 (add-hook 'prelude-prog-mode-hook 'disable-guru-mode t)
+(add-hook 'prelude-prog-mode-hook 'disable-flyspell-mode t)
 
 (defun turn-on-linum () (linum-mode t))
 (defun turn-on-flymake () (flymake-mode t))
@@ -103,6 +107,8 @@ A place is considered `tab-width' character columns."
 (global-linum-mode 1)
 (global-hl-line-mode 1)
 (global-rainbow-delimiters-mode 1)
+
+(desktop-save-mode 1)
 
 (mouse-avoidance-mode 'cat-and-mouse)
 
