@@ -47,6 +47,10 @@
   (flyspell-mode -1))
 
 (add-hook 'prelude-prog-mode-hook 'disable-guru-mode t)
+(add-hook 'prog-mode-hook 'disable-flyspell-mode t)
+(remove-hook 'message-mode-hook 'prelude-turn-on-flyspell)
+(remove-hook 'prelude-coding-hook 'flyspell-prog-mode)
+(remove-hook 'text-mode-hook 'prelude-turn-on-flyspell)
 (add-hook 'prog-mode-hook 'auto-complete-mode)
 
 (defun what-face (pos)
