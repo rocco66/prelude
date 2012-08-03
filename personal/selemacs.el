@@ -114,6 +114,7 @@ A place is considered `tab-width' character columns."
 (global-set-key (kbd "C-x f") 'prelude-recentf-ido-find-file)
 
 ;; SETTINGS
+
 (set-default-font "Dejavu Sans Mono-10")
 (add-to-list 'default-frame-alist '(font . "Dejavu Sans Mono-10"))
 
@@ -144,12 +145,19 @@ A place is considered `tab-width' character columns."
  use-dialog-box nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(require 'paren)
+(show-paren-mode +1)
+(setq show-paren-style 'parenthesis)
+(set-face-background 'show-paren-match-face "#6f6f6f")
+(set-face-foreground 'show-paren-match-face "#dca3a3")
+
 ;; whenever an external process changes a file underneath emacs, and
 ;; there was no unsaved changes in the corresponding buffer, just
 ;; revert its content to reflect what's on-disk.
 (global-auto-revert-mode 1)
 
 ;; ERLANG
+
 (setq erlang-root-dir "/usr/local/lib/erlang")
 
 (add-to-list 'load-path
