@@ -40,9 +40,6 @@
 
 ;; DEFUNS
 
-(defvar coding-hook nil
-  "Hook that gets run on activation of any programming mode.")
-
 (defun disable-guru-mode ()
   (guru-mode -1))
 
@@ -50,16 +47,7 @@
   (flyspell-mode -1))
 
 (add-hook 'prelude-prog-mode-hook 'disable-guru-mode t)
-(add-hook 'prelude-prog-mode-hook 'disable-flyspell-mode t)
-
-(defun turn-on-linum () (linum-mode t))
-(defun turn-on-flymake () (flymake-mode t))
-(add-hook 'coding-hook 'electric-pair-mode)
-(add-hook 'coding-hook 'electric-layout-mode)
-(add-hook 'coding-hook 'turn-on-linum)
-(add-hook 'coding-hook 'auto-complete-mode)
-(add-hook 'coding-hook 'rainbow-delimiters-mode)
-(add-hook 'prelude-prog-mode-hook 'auto-complete-mode)
+(add-hook 'prog-mode-hook 'auto-complete-mode)
 
 (defun what-face (pos)
   (interactive "d")
@@ -77,6 +65,29 @@ A place is considered `tab-width' character columns."
         (end (or (and mark-active (region-end)) (line-end-position))))
     (indent-rigidly beg end (* (or arg 1) tab-width))))
 
+(defun switch-full-screen ()
+  (interactive)
+  (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen"))
+
+;; REQUIRES
+(require 'smex)
+(smex-initialize)
+
+(require 'ace-jump-mode)
+
+(require 'recentf)
+(setq recentf-save-file "~/.emacs.d/personal/temp/recentf"
+      recentf-max-saved-items 100
+      recentf-max-menu-items 10)
+(recentf-mode t)
+
+(when (and (require 'auto-complete nil t)
+           (require 'auto-complete-config nil t))
+  (setq ac-comphist-file "~/.emacs.d/cache/ac-comphist.dat"
+        ac-candidate-limit 20
+        ac-ignore-case nil)
+  (global-auto-complete-mode))
+
 ;; BINDINGS
 
 (global-set-key (kbd "C-0") 'text-scale-normal-size)
@@ -87,18 +98,14 @@ A place is considered `tab-width' character columns."
 (global-set-key (kbd "C->") 'textmate-shift-right)
 (global-set-key (kbd "C-<") 'textmate-shift-left)
 
-(require 'smex)
-(smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-S-x") 'smex-major-mode-commands)
 
-(require 'ace-jump-mode)
 (define-key global-map (kbd "C-`") 'ace-jump-word-mode)
 
-(defun switch-full-screen ()
-  (interactive)
-  (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen"))
 (global-set-key [f11] 'switch-full-screen)
+
+(global-set-key (kbd "C-x f") 'prelude-recentf-ido-find-file)
 
 ;; SETTINGS
 (set-default-font "Dejavu Sans Mono-10")
@@ -112,6 +119,7 @@ A place is considered `tab-width' character columns."
 
 (mouse-avoidance-mode 'cat-and-mouse)
 
+;; hack for linum's normal functioning with whitespace mode
 (add-hook 'linum-before-numbering-hook
           (lambda ()
             (let ((w (length (number-to-string
@@ -126,13 +134,6 @@ A place is considered `tab-width' character columns."
                                    'face 'linum))))))
 
 (fset 'yes-or-no-p 'y-or-n-p)
-
-(when (and (require 'auto-complete nil t)
-           (require 'auto-complete-config nil t))
-  (setq ac-comphist-file "~/.emacs.d/cache/ac-comphist.dat"
-        ac-candidate-limit 20
-        ac-ignore-case nil)
-  (global-auto-complete-mode))
 
 ;; whenever an external process changes a file underneath emacs, and
 ;; there was no unsaved changes in the corresponding buffer, just
