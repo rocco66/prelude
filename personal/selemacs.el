@@ -44,7 +44,7 @@
   (guru-mode -1))
 
 (defun disable-flyspell-mode ()
-  (flyspell-mode -1))
+  (flyspell-mode -2))
 
 (add-hook 'prelude-prog-mode-hook 'disable-guru-mode t)
 (add-hook 'prog-mode-hook 'disable-flyspell-mode t)
@@ -69,6 +69,11 @@ A place is considered `tab-width' character columns."
         (end (or (and mark-active (region-end)) (line-end-position))))
     (indent-rigidly beg end (* (or arg 1) tab-width))))
 
+(defun textmate-shift-left (&optional arg)
+  "Shift the line or region to the ARG places to the left."
+  (interactive)
+  (textmate-shift-right (* -1 (or arg 1))))
+
 (defun switch-full-screen ()
   (interactive)
   (shell-command "wmctrl -r :ACTIVE: -btoggle,fullscreen"))
@@ -91,12 +96,14 @@ A place is considered `tab-width' character columns."
       recentf-max-menu-items 10)
 (recentf-mode t)
 
-(when (and (require 'auto-complete nil t)
-           (require 'auto-complete-config nil t))
-  (setq ac-comphist-file "~/.emacs.d/cache/ac-comphist.dat"
-        ac-candidate-limit 20
-        ac-ignore-case nil)
-  (global-auto-complete-mode))
+(require 'auto-complete nil t)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(require 'auto-complete-config nil t)
+(ac-config-default)
+(setq ac-comphist-file "~/.emacs.d/cache/ac-comphist.dat"
+      ac-candidate-limit 20
+      ac-ignore-case nil)
+(global-auto-complete-mode)
 
 ;; BINDINGS
 
@@ -122,6 +129,8 @@ A place is considered `tab-width' character columns."
 (set-default-font "Dejavu Sans Mono-10")
 (add-to-list 'default-frame-alist '(font . "Dejavu Sans Mono-10"))
 
+(setq-default tab-width 4)
+
 (global-linum-mode 1)
 (global-hl-line-mode 1)
 (global-rainbow-delimiters-mode 1)
@@ -130,30 +139,21 @@ A place is considered `tab-width' character columns."
 
 (mouse-avoidance-mode 'cat-and-mouse)
 
-;; hack for linum's normal functioning with whitespace mode
-(add-hook 'linum-before-numbering-hook
-          (lambda ()
-            (let ((w (length (number-to-string
-                              (count-lines (point-min) (point-max))))))
-              (setq linum-format
-                    `(lambda (line)
-                       (propertize (concat
-                                    (truncate-string-to-width
-                                     "" (- ,w (length (number-to-string line)))
-                                     nil ?\x2007)
-                                    (number-to-string line))
-                                   'face 'linum))))))
-
 (setq
  cursor-in-non-selected-windows nil
- use-dialog-box nil)
+ use-dialog-box nil
+ whitespace-style '(trailing
+                    lines
+                    space-before-tab space-after-tab
+                    indentation))
+
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (require 'paren)
 (show-paren-mode +1)
 (setq show-paren-style 'parenthesis)
 (set-face-background 'show-paren-match-face "#6f6f6f")
-(set-face-foreground 'show-paren-match-face "#dca3a3")
+(set-face-foreground 'show-paren-match-face "#94bff3")
 
 ;; whenever an external process changes a file underneath emacs, and
 ;; there was no unsaved changes in the corresponding buffer, just
