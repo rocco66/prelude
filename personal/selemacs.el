@@ -30,6 +30,7 @@
         haml-mode sass-mode yaml-mode
         markdown-mode
         auctex ;; mode for LaTeX
+        python
 ))
 
 (defun package-check (p)
