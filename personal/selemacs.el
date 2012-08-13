@@ -147,6 +147,7 @@ A place is considered `tab-width' character columns."
                     lines
                     space-before-tab space-after-tab
                     indentation))
+(global-whitespace-mode 1)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
