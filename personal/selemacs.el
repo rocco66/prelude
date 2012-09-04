@@ -22,6 +22,7 @@
         icomplete+         ;; better icomplete
         ace-jump-mode      ;; allows to jump in visible part of the
                            ;; buffer
+        undo-tree          ;; visual undo tree
         ;; language-specific modes
         coffee-mode js2-mode
         haskell-mode
@@ -53,6 +54,7 @@
 (remove-hook 'prelude-coding-hook 'flyspell-prog-mode)
 (remove-hook 'text-mode-hook 'prelude-turn-on-flyspell)
 (add-hook 'prog-mode-hook 'auto-complete-mode)
+(add-hook 'prog-mode-hook 'undo-tree-mode)
 
 (defun what-face (pos)
   (interactive "d")
