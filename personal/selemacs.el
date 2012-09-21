@@ -148,6 +148,7 @@ A place is considered `tab-width' character columns."
                     space-before-tab space-after-tab
                     indentation))
 (global-whitespace-mode 1)
+(add-hook 'before-save-hook 'delete-trailing-whitespace) ;; remove trailing ws
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
