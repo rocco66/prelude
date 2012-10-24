@@ -26,7 +26,7 @@
         ;; language-specific modes
         coffee-mode js2-mode
         haskell-mode
-        clojure-mode
+        clojure-mode clojurescript-mode paredit
         ess
         haml-mode sass-mode yaml-mode
         markdown-mode
@@ -199,3 +199,27 @@ A place is considered `tab-width' character columns."
              (add-to-list 'TeX-command-list
                           '("XeLaTeX" "xelatex -interaction=nonstopmode -shell-escape %s"
                             TeX-run-command t t :help "Run xelatex") t)))
+
+;; Clojure
+
+(defvar electrify-return-match
+  "[\]}\)\"]"
+  "If this regexp matches the text after the cursor, do an \"electric\"
+  return.")
+
+(defun electrify-return-if-match (arg)
+  "If the text after the cursor matches `electrify-return-match' then
+  open and indent an empty line between the cursor and the text.  Move the
+  cursor to the new line."
+  (interactive "P")
+  (let ((case-fold-search nil))
+    (if (looking-at electrify-return-match)
+        (save-excursion (newline-and-indent)))
+    (newline arg)
+    (indent-according-to-mode)))
+
+(defun paredit-mode-enable () (paredit-mode 1))
+(add-hook 'clojure-mode-hook 'paredit-mode-enable)
+(add-hook 'clojure-mode-hook
+          '(lambda ()
+             (local-set-key (kbd "RET") 'electrify-return-if-match)))
