@@ -23,6 +23,7 @@
         ace-jump-mode      ;; allows to jump in visible part of the
                            ;; buffer
         undo-tree          ;; visual undo tree
+        gist               ;; integration with github's gist
         ;; language-specific modes
         coffee-mode js2-mode
         haskell-mode
