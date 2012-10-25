@@ -14,3 +14,6 @@ TODO:
 
 -Erlang (jump-to-definition at least; EDTS package?)
 -Haskell
+-Dired
+-Magit
+-Orgmode (?)
