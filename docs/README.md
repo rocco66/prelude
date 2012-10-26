@@ -45,3 +45,4 @@ TODO:
 -Dired
 -Magit + Gist
 -Orgmode (?)
+-yasnippet
