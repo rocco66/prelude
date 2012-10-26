@@ -24,7 +24,8 @@ Some bindings, [extra] means that this isn't standard binding
 - `F4`: stop recording macro & execute
 - `F11`: full screen mode [extra]
 - `F12`: toggle menu bar [prelude]
-- `C-=`: expand-region [extra]
+- `C-=`: expand-region [prelude]
+- `C-x ^` / `M-^`: join current line to previous one
 - `C-k`: kill an entire line
 - `M-z`: zap-to-char (kill everything from cursor to provided character)
 - `C-l`: recenter (toggle 3 positions of window w.r.t. cursor)
