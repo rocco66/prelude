@@ -18,7 +18,7 @@ expand-region is an awesome module that is shown here:
 http://emacsrocks.com/e09.html It works by expanding current region to
 the next semantical block. **Default keybinding is `C-=`**.
 
-Some bindings, [extra] means that this isn't standard binding
+Some bindings, [extra] means that this isn't standard one:
 
 - `F3`: start recording macro
 - `F4`: stop recording macro & execute
@@ -36,6 +36,11 @@ Some bindings, [extra] means that this isn't standard binding
 - `C-0`: scale text to default font size [extra]
 - `M-S-x`: like M-x, but for current major mode only (smex) [extra]
 - `C-x f`: recent files (ido) [extra]
+
+To save a macro:
+
+- `M-x kmacro-name-last-macro` to give a name to last macro
+- `M-x insert-kbd-macro` to paste elisp code
 
 
 TODO:
