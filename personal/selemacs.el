@@ -66,13 +66,13 @@
 
 (defun textmate-shift-right (&optional arg)
   "Shift the line or region to the ARG places to the right.
-A place is considered `tab-width' character columns."
+A place is considered 1 character columns."
   (interactive)
   (let ((deactivate-mark nil)
         (beg (or (and mark-active (region-beginning))
                  (line-beginning-position)))
         (end (or (and mark-active (region-end)) (line-end-position))))
-    (indent-rigidly beg end (* (or arg 1) tab-width))))
+    (indent-rigidly beg end (* (or arg 1) 1))))
 
 (defun textmate-shift-left (&optional arg)
   "Shift the line or region to the ARG places to the left."
