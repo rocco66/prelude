@@ -24,6 +24,7 @@
                            ;; buffer
         undo-tree          ;; visual undo tree
         gist               ;; integration with github's gist
+        expand-region      ;; helps to select large chunks of code
         ;; language-specific modes
         coffee-mode js2-mode
         haskell-mode
@@ -154,6 +155,9 @@ A place is considered `tab-width' character columns."
 (add-hook 'before-save-hook 'delete-trailing-whitespace) ;; remove trailing ws
 
 (fset 'yes-or-no-p 'y-or-n-p)
+
+(pending-delete-mode t) ;; replace region's content when typing
+                        ;; with active region. Not sure if effective here
 
 (require 'paren)
 (show-paren-mode +1)
