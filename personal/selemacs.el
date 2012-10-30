@@ -32,6 +32,7 @@
         ess
         haml-mode sass-mode yaml-mode
         markdown-mode
+        yaml-mode
         auctex ;; mode for LaTeX
         python
 ))
