@@ -29,6 +29,7 @@
         coffee-mode js2-mode
         haskell-mode
         clojure-mode clojurescript-mode paredit
+            highlight nrepl nrepl-eval-sexp-fu ;; clojure REPL-related stuff
         ess
         haml-mode sass-mode yaml-mode
         markdown-mode
@@ -229,3 +230,21 @@ A place is considered 1 character columns."
 (add-hook 'clojure-mode-hook
           '(lambda ()
              (local-set-key (kbd "RET") 'electrify-return-if-match)))
+
+;; highlight expression on eval
+
+;; taken from emacs-live project, needed for nrepl-eval-sexp-fu
+(defun live-paredit-top-level-p ()
+  "Returns true if point is not within a given form i.e. it's in
+  toplevel 'whitespace'"
+  (not
+   (save-excursion
+     (ignore-errors
+       (paredit-forward-up)
+       t))))
+
+(require 'highlight)
+(require 'nrepl-eval-sexp-fu)
+(setq nrepl-eval-sexp-fu-flash-duration 0.5
+      nrepl-eval-sexp-fu-flash-face 'compilation-info-face
+      nrepl-eval-sexp-fu-flash-error 'compilation-error-face)
