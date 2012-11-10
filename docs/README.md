@@ -37,6 +37,10 @@ Some bindings, [extra] means that this isn't standard one:
 - `M-S-x`: like M-x, but for current major mode only (smex) [extra]
 - `C-x f`: recent files (ido) [extra]
 
+in Erlang mode:
+
+- `C-c C-y` copy current function's arguments (God bless this feature!)
+
 To save a macro:
 
 - `M-x kmacro-name-last-macro` to give a name to last macro
