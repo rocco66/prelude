@@ -135,6 +135,8 @@ A place is considered 1 character columns."
 
 (global-set-key (kbd "C-x f") 'prelude-recentf-ido-find-file)
 
+(global-set-key (kbd "C-C C-SPC") 'copy-all)
+
 ;; SETTINGS
 
 (set-default-font "Dejavu Sans Mono-10")
