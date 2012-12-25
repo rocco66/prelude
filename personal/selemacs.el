@@ -50,10 +50,10 @@
   (guru-mode -1))
 
 (defun disable-flyspell-mode ()
-  (flyspell-mode -2))
+  (flyspell-mode -1))
 
 (add-hook 'prelude-prog-mode-hook 'disable-guru-mode t)
-(add-hook 'prog-mode-hook 'disable-flyspell-mode t)
+(add-hook 'prelude-prog-mode-hook 'disable-flyspell-mode t)
 (remove-hook 'message-mode-hook 'prelude-turn-on-flyspell)
 (remove-hook 'prelude-coding-hook 'flyspell-prog-mode)
 (remove-hook 'text-mode-hook 'prelude-turn-on-flyspell)
@@ -89,6 +89,10 @@ A place is considered 1 character columns."
   (interactive)
   (run-hooks 'prog-hook))
 
+(defun copy-all ()
+  "Copy entire buffer to clipboard"
+  (interactive)
+  (clipboard-kill-ring-save (point-min) (point-max)))
 
 ;; REQUIRES
 
