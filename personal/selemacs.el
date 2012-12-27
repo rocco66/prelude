@@ -137,6 +137,8 @@ A place is considered 1 character columns."
 
 (global-set-key (kbd "C-C C-SPC") 'copy-all)
 
+(global-set-key (kbd "C-C C-C") 'coffee-compile-region)
+
 ;; SETTINGS
 
 (set-default-font "Dejavu Sans Mono-10")
