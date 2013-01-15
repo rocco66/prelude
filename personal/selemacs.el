@@ -36,6 +36,7 @@
         yaml-mode
         auctex ;; mode for LaTeX
         python
+        jedi ;;python autocomplete
 ))
 
 (defun package-check (p)
@@ -256,3 +257,10 @@ A place is considered 1 character columns."
 (setq nrepl-eval-sexp-fu-flash-duration 0.5
       nrepl-eval-sexp-fu-flash-face 'compilation-info-face
       nrepl-eval-sexp-fu-flash-error 'compilation-error-face)
+
+
+;; python
+(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'jedi:ac-setup)
+
+(setq jedi:setup-keys t)
