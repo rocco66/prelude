@@ -95,6 +95,11 @@ A place is considered 1 character columns."
   (interactive)
   (clipboard-kill-ring-save (point-min) (point-max)))
 
+(defun kill-other-buffers ()
+  "Kill all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
 ;; REQUIRES
 
 (require 'smex)
@@ -138,8 +143,6 @@ A place is considered 1 character columns."
 
 (global-set-key (kbd "C-C C-SPC") 'copy-all)
 
-(global-set-key (kbd "C-C C-C") 'coffee-compile-region)
-
 ;; SETTINGS
 
 (set-default-font "Dejavu Sans Mono-10")
@@ -160,6 +163,8 @@ A place is considered 1 character columns."
  use-dialog-box nil
  whitespace-style '(trailing
                     lines
+                    tabs
+                    spaces
                     space-before-tab space-after-tab
                     indentation))
 (global-whitespace-mode 1)
@@ -240,6 +245,8 @@ A place is considered 1 character columns."
           '(lambda ()
              (local-set-key (kbd "RET") 'electrify-return-if-match)))
 
+(setq nrepl-popup-stacktraces nil)
+
 ;; highlight expression on eval
 
 ;; taken from emacs-live project, needed for nrepl-eval-sexp-fu
@@ -258,9 +265,19 @@ A place is considered 1 character columns."
       nrepl-eval-sexp-fu-flash-face 'compilation-info-face
       nrepl-eval-sexp-fu-flash-error 'compilation-error-face)
 
+(add-hook 'nrepl-interaction-mode-hook
+          'nrepl-turn-on-eldoc-mode)
+(setq nrepl-tab-command 'indent-for-tab-command)
+;; (setq nrepl-popup-stacktraces nil)
 
-;; python
-(add-hook 'python-mode-hook 'jedi:setup)
-(add-hook 'python-mode-hook 'jedi:ac-setup)
 
-(setq jedi:setup-keys t)
+;; haskell
+(add-hook 'haskell-mode-hook 'haskell-hook)
+(defun haskell-hook ()
+  ;; Build the Cabal project.
+  (define-key haskell-mode-map (kbd "C-c C-c")
+    '(lambda ()
+       (interactive)
+       (haskell-process-cabal-build)
+       (haskell-interactive-mode-clear)
+       (haskell-interactive-switch))))
