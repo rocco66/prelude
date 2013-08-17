@@ -27,7 +27,9 @@
         expand-region      ;; helps to select large chunks of code
         ;; language-specific modes
         coffee-mode js2-mode
+        livescript-mode
         haskell-mode
+        tuareg
         clojure-mode clojurescript-mode paredit
             highlight nrepl nrepl-eval-sexp-fu ;; clojure REPL-related stuff
         ess
@@ -37,7 +39,14 @@
         auctex ;; mode for LaTeX
         python
         jedi ;;python autocomplete
+        evil
+        surround
+        linum-relative
+        full-ack ;; better than grep-find
+        grizzl
+        projectile
 ))
+
 
 (defun package-check (p)
   (unless (package-installed-p p)
@@ -105,6 +114,10 @@ A place is considered 1 character columns."
 (require 'smex)
 (smex-initialize)
 
+(require 'evil)
+
+(require 'linum-relative)
+
 (require 'ace-jump-mode)
 
 (require 'recentf)
@@ -143,7 +156,21 @@ A place is considered 1 character columns."
 
 (global-set-key (kbd "C-C C-SPC") 'copy-all)
 
+; evil mode bindings
+
+(define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-insert-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-replace-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+(define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
+
+(evil-set-initial-state 'haskell-interactive-mode 'emacs)
+(evil-set-initial-state 'magit-blame-mode 'emacs)
+
 ;; SETTINGS
+
+(projectile-global-mode)
+(setq projectile-completion-system 'grizzl)
 
 (set-default-font "Dejavu Sans Mono-10")
 (add-to-list 'default-frame-alist '(font . "Dejavu Sans Mono-10"))
@@ -154,6 +181,12 @@ A place is considered 1 character columns."
 (global-hl-line-mode 1)
 (global-rainbow-delimiters-mode 1)
 
+;; (load-theme 'solarized-dark t)
+
+(evil-mode 1)
+
+(global-surround-mode 1)
+
 (desktop-save-mode 1)
 
 (mouse-avoidance-mode 'cat-and-mouse)
@@ -161,13 +194,18 @@ A place is considered 1 character columns."
 (setq
  cursor-in-non-selected-windows nil
  use-dialog-box nil
- whitespace-style '(trailing
+ whitespace-style '(
+                    ;; tab-mark
+                    ;; space-mark
+                    ;; face
+                    trailing
                     lines
-                    tabs
-                    spaces
+                    ;; tabs
+                    ;; spaces
                     space-before-tab space-after-tab
                     indentation))
 (global-whitespace-mode 1)
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace) ;; remove trailing ws
 
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -281,3 +319,50 @@ A place is considered 1 character columns."
        (haskell-process-cabal-build)
        (haskell-interactive-mode-clear)
        (haskell-interactive-switch))))
+
+
+;; ocaml
+(push "~/.opam/system/share/emacs/site-lisp" load-path)
+;; (autoload 'utop "utop" "Toplevel for OCaml" t)
+(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
+
+
+;; jinja2 localizastion
+(defun wrap-jinja2-underscore ()
+  (interactive)
+  (save-excursion
+    (goto-char (region-beginning))
+    (insert "{{ _(\""))
+  (save-excursion
+    (goto-char (region-end))
+    (insert "\") }}")))
+
+(defun wrap-jinja2-block ()
+  (interactive)
+  (save-excursion
+    (goto-char (region-beginning))
+    (insert "{% trans -%}"))
+  (save-excursion
+    (goto-char (region-end))
+    (insert "{%- endtrans %}")))
+
+(global-set-key (kbd "C-x M-w") 'wrap-jinja2-underscore)
+(global-set-key (kbd "C-x M-b") 'wrap-jinja2-block)
+
+
+;; some JIRA/STASH integration
+(defun insert-issue-number-from-branch ()
+  "Get current issue name from branch and insert in commit message"
+  (interactive)
+  (let* ((branch-name (magit-get-current-branch))
+         (pat "#\\([A-Z]+-[0-9]+\\)$")
+         (pos (string-match pat branch-name)))
+    (if pos
+        (save-excursion
+          (end-of-buffer)
+          (insert "\n")
+          (insert (match-string 1 branch-name)))
+      (message "#PROJECT-number not found in the end of branch name"))))
+
+(global-set-key (kbd "C-x M-i") 'insert-issue-number-from-branch)
