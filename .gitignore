@@ -19,3 +19,4 @@ session.*
 /prelude-modules.el
 projectile-bookmarks.eld
 .cask
+abbrev_defs

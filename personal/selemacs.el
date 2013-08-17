@@ -30,7 +30,7 @@
         livescript-mode
         haskell-mode
         tuareg
-        clojure-mode clojurescript-mode paredit
+        clojure-mode paredit
             highlight nrepl nrepl-eval-sexp-fu ;; clojure REPL-related stuff
         ess
         haml-mode sass-mode yaml-mode
@@ -237,7 +237,7 @@ A place is considered 1 character columns."
 
 (add-hook 'erlang-mode-hook 'run-prog-hook)
 
-(require 'erlang-start)
+;; (require 'erlang-start)
 
 ;; LaTeX
 
