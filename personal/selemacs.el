@@ -62,6 +62,9 @@
 (defun disable-flyspell-mode ()
   (flyspell-mode -1))
 
+(eval-after-load "flyspell"
+  '(defun flyspell-mode (&optional arg)))
+
 (add-hook 'prelude-prog-mode-hook 'disable-guru-mode t)
 (add-hook 'prelude-prog-mode-hook 'disable-flyspell-mode t)
 (remove-hook 'message-mode-hook 'prelude-turn-on-flyspell)
