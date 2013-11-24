@@ -33,7 +33,7 @@
         clojure-mode paredit
             highlight nrepl nrepl-eval-sexp-fu ;; clojure REPL-related stuff
         ess
-        haml-mode sass-mode yaml-mode
+        haml-mode sass-mode jade-mode yaml-mode
         markdown-mode
         yaml-mode
         auctex ;; mode for LaTeX
@@ -45,6 +45,8 @@
         full-ack ;; better than grep-find
         grizzl
         projectile
+        scala-mode2
+        sbt-mode
 ))
 
 
@@ -173,7 +175,9 @@ A place is considered 1 character columns."
 ;; SETTINGS
 
 (projectile-global-mode)
-(setq projectile-completion-system 'grizzl)
+;; (setq projectile-enable-caching t)
+;; (setq projectile-indexing-method 'native)
+;; (setq projectile-completion-system 'grizzl)
 
 (set-default-font "Dejavu Sans Mono-10")
 (add-to-list 'default-frame-alist '(font . "Dejavu Sans Mono-10"))
@@ -198,18 +202,20 @@ A place is considered 1 character columns."
  cursor-in-non-selected-windows nil
  use-dialog-box nil
  whitespace-style '(
-                    ;; tab-mark
-                    ;; space-mark
-                    ;; face
+                    tab-mark
+                    space-mark
+                    face
                     trailing
                     lines
-                    ;; tabs
-                    ;; spaces
+                    tabs
+                    spaces
                     space-before-tab space-after-tab
                     indentation))
+;; nice dot-spaces colors
+(set-face-attribute 'whitespace-space nil :background nil :foreground "gray30")
 (global-whitespace-mode 1)
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace) ;; remove trailing ws
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -313,16 +319,20 @@ A place is considered 1 character columns."
 
 
 ;; haskell
-(add-hook 'haskell-mode-hook 'haskell-hook)
 (defun haskell-hook ()
   ;; Build the Cabal project.
+  (turn-on-haskell-indentation)
   (define-key haskell-mode-map (kbd "C-c C-c")
     '(lambda ()
        (interactive)
        (haskell-process-cabal-build)
        (haskell-interactive-mode-clear)
        (haskell-interactive-switch))))
+(add-hook 'haskell-mode-hook 'haskell-hook)
 
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 
 ;; ocaml
 (push "~/.opam/system/share/emacs/site-lisp" load-path)
@@ -350,9 +360,29 @@ A place is considered 1 character columns."
     (goto-char (region-end))
     (insert "{%- endtrans %}")))
 
-(global-set-key (kbd "C-x M-w") 'wrap-jinja2-underscore)
-(global-set-key (kbd "C-x M-b") 'wrap-jinja2-block)
+;; angular l10n
+(defun wrap-angular-gettext-string ()
+  (interactive)
+  (save-excursion
+    (goto-char (region-beginning))
+    (insert "{{'"))
+  (save-excursion
+    (goto-char (region-end))
+    (insert "'|translate}}")))
 
+(defun wrap-angular-gettext-block ()
+  (interactive)
+  (save-excursion
+    (insert ", translate")))
+
+(defun wrap-angular-gettext-empty-block ()
+  (interactive)
+  (save-excursion
+    (insert "(translate)")))
+
+(global-set-key (kbd "C-x M-w") 'wrap-angular-gettext-string)
+(global-set-key (kbd "C-x M-e") 'wrap-angular-gettext-empty-block)
+(global-set-key (kbd "C-x M-b") 'wrap-angular-gettext-block)
 
 ;; some JIRA/STASH integration
 (defun insert-issue-number-from-branch ()
@@ -369,3 +399,9 @@ A place is considered 1 character columns."
       (message "#PROJECT-number not found in the end of branch name"))))
 
 (global-set-key (kbd "C-x M-i") 'insert-issue-number-from-branch)
+
+;; ack
+(defalias 'ack 'ack-and-a-half)
+(defalias 'ack-same 'ack-and-a-half-same)
+(defalias 'ack-find-file 'ack-and-a-half-find-file)
+(defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)

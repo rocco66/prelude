@@ -20,3 +20,4 @@ session.*
 projectile-bookmarks.eld
 .cask
 abbrev_defs
+tramp
