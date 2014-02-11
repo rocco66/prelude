@@ -26,11 +26,11 @@
         gist               ;; integration with github's gist
         expand-region      ;; helps to select large chunks of code
         ;; language-specific modes
-        coffee-mode js2-mode
+        coffee-mode js2-mode json-mode
         livescript-mode
         haskell-mode
         tuareg
-        clojure-mode paredit
+        clojure-mode
             highlight nrepl nrepl-eval-sexp-fu ;; clojure REPL-related stuff
         ess
         haml-mode sass-mode jade-mode yaml-mode
@@ -39,14 +39,15 @@
         auctex ;; mode for LaTeX
         python
         jedi ;;python autocomplete
-        evil
+        evil ;; vim like keybindings
+            evil-paredit evil-nerd-commenter
+        paredit paredit-everywhere
         surround
         linum-relative
         full-ack ;; better than grep-find
-        grizzl
-        projectile
-        scala-mode2
-        sbt-mode
+        grizzl projectile
+        scala-mode2 sbt-mode
+        dired+
 ))
 
 
@@ -172,6 +173,8 @@ A place is considered 1 character columns."
 (evil-set-initial-state 'haskell-interactive-mode 'emacs)
 (evil-set-initial-state 'magit-blame-mode 'emacs)
 
+(evilnc-default-hotkeys)
+
 ;; SETTINGS
 
 (projectile-global-mode)
@@ -191,10 +194,9 @@ A place is considered 1 character columns."
 ;; (load-theme 'solarized-dark t)
 
 (evil-mode 1)
-
 (global-surround-mode 1)
-
 (desktop-save-mode 1)
+(paredit-everywhere-mode 1)
 
 (mouse-avoidance-mode 'cat-and-mouse)
 
