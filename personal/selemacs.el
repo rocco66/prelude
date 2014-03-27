@@ -43,11 +43,11 @@
             evil-paredit evil-nerd-commenter
         paredit paredit-everywhere
         surround
-        linum-relative
         full-ack ;; better than grep-find
         grizzl projectile
         scala-mode2 sbt-mode
         dired+
+        manage-minor-mode
 ))
 
 
@@ -121,8 +121,6 @@ A place is considered 1 character columns."
 (smex-initialize)
 
 (require 'evil)
-
-(require 'linum-relative)
 
 (require 'ace-jump-mode)
 
@@ -416,3 +414,8 @@ A place is considered 1 character columns."
 (global-set-key (kbd "C-c C-b") 'livescript-compile-buffer)
 (global-set-key (kbd "C-c C-r") 'livescript-compile-region)
 ;;;end  wait for pull request
+
+
+;; fix stupid missing linenumbers
+;; http://stackoverflow.com/questions/16094303/global-line-numbering-is-intermittent-conflict-with-global-whitespace
+(setq linum-format "%d")
