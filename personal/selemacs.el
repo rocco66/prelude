@@ -406,15 +406,8 @@ A place is considered 1 character columns."
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
-
-;; wait for pull request
-;; https://github.com/yhisamatsu/livescript-mode/pull/2
-(add-to-list 'load-path "~/workspace/livescript-mode")
-
 (global-set-key (kbd "C-c C-b") 'livescript-compile-buffer)
 (global-set-key (kbd "C-c C-r") 'livescript-compile-region)
-;;;end  wait for pull request
-
 
 ;; fix stupid missing linenumbers
 ;; http://stackoverflow.com/questions/16094303/global-line-numbering-is-intermittent-conflict-with-global-whitespace
