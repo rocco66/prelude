@@ -38,6 +38,7 @@
         yaml-mode
         auctex ;; mode for LaTeX
         python
+          sphinx-doc
         jedi ;;python autocomplete
         evil ;; vim like keybindings
             evil-paredit evil-nerd-commenter
@@ -50,6 +51,8 @@
         manage-minor-mode
 ))
 
+
+(defvar python-indent 4)
 
 (defun package-check (p)
   (unless (package-installed-p p)
@@ -179,9 +182,6 @@ A place is considered 1 character columns."
 ;; (setq projectile-enable-caching t)
 ;; (setq projectile-indexing-method 'native)
 ;; (setq projectile-completion-system 'grizzl)
-
-(set-default-font "Dejavu Sans Mono-10")
-(add-to-list 'default-frame-alist '(font . "Dejavu Sans Mono-10"))
 
 (setq-default tab-width 4)
 

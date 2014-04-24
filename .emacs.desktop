@@ -1,0 +1,29 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Thu Apr 24 09:33:15 2014
+;; Desktop file format version 206
+;; Emacs version 24.3.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring nil)
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+(setq file-name-history '("/Users/rocco66/.emacs.d/personal/selemacs.el"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/Users/rocco66/.emacs.d/personal/selemacs.el"
+  "selemacs.el"
+  'emacs-lisp-mode
+  '(prelude-mode global-auto-revert-mode smartparens-mode volatile-highlights-mode flx-ido-mode projectile-mode global-whitespace-mode undo-tree-mode auto-complete-mode linum-mode rainbow-delimiters-mode)
+  5259
+  '(5259 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
