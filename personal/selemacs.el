@@ -38,8 +38,8 @@
         yaml-mode
         auctex ;; mode for LaTeX
         python
-          sphinx-doc
-        jedi ;;python autocomplete
+          sphinx-doc flycheck-pyflakes
+          jedi jedi-direx;;python autocomplete
         evil ;; vim like keybindings
             evil-paredit evil-nerd-commenter
         paredit paredit-everywhere
@@ -71,6 +71,11 @@
 (eval-after-load "flyspell"
   '(defun flyspell-mode (&optional arg)))
 
+(defun fix-underscore ()
+  ;; fix evil-search-word-backward work with underscore
+  (modify-syntax-entry ?_ "w" python-mode-syntax-table))
+
+
 (add-hook 'prelude-prog-mode-hook 'disable-guru-mode t)
 (add-hook 'prelude-prog-mode-hook 'disable-flyspell-mode t)
 (remove-hook 'message-mode-hook 'prelude-turn-on-flyspell)
@@ -78,6 +83,15 @@
 (remove-hook 'text-mode-hook 'prelude-turn-on-flyspell)
 (add-hook 'prog-mode-hook 'auto-complete-mode)
 (add-hook 'prog-mode-hook 'undo-tree-mode)
+
+(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'fix-underscore)
+(setq jedi:complete-on-dot t)
+(setq require-final-newline t)
+
+(eval-after-load "python"
+  '(define-key python-mode-map "\C-cx" 'jedi-direx:pop-to-buffer))
+(add-hook 'jedi-mode-hook 'jedi-direx:setup)
 
 (defun what-face (pos)
   (interactive "d")
@@ -162,7 +176,10 @@ A place is considered 1 character columns."
 (global-set-key (kbd "C-x f") 'prelude-recentf-ido-find-file)
 
 (global-set-key (kbd "C-C C-SPC") 'copy-all)
-
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-x f") 'helm-projectile)
+(global-set-key (kbd "C-x b") 'helm-mini)
 ; evil mode bindings
 
 (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
@@ -173,6 +190,14 @@ A place is considered 1 character columns."
 
 (evil-set-initial-state 'haskell-interactive-mode 'emacs)
 (evil-set-initial-state 'magit-blame-mode 'emacs)
+;; (evil-set-initial-state 'direx 'emacs)  ;; direx-jedi window
+
+(evil-set-initial-state 'direx-mode 'emacs)
+
+;; (add-hook 'direx-mode-hook 'evil-emacs-state)
+;; (add-hook 'Direx-mode-hook 'evil-emacs-state)
+;;(add-to-list 'evil-disabled-modes-list 'Direx)
+;;(add-to-list 'evil-disabled-modes-list 'direx)
 
 (evilnc-default-hotkeys)
 
@@ -182,6 +207,8 @@ A place is considered 1 character columns."
 ;; (setq projectile-enable-caching t)
 ;; (setq projectile-indexing-method 'native)
 ;; (setq projectile-completion-system 'grizzl)
+(set-default-font "PT Mono-14")
+(add-to-list 'default-frame-alist '(font . "PT Mono-14"))
 
 (setq-default tab-width 4)
 
@@ -245,6 +272,8 @@ A place is considered 1 character columns."
 (add-to-list 'ac-modes 'erlang-mode)
 
 (add-hook 'erlang-mode-hook 'run-prog-hook)
+
+(add-hook 'after-init-hook 'global-flycheck-mode)
 
 ;; (require 'erlang-start)
 
@@ -380,9 +409,25 @@ A place is considered 1 character columns."
   (save-excursion
     (insert "(translate)")))
 
+
+(defun un-camelcase-word-at-point ()
+  "un-camelcase the word at point, replacing uppercase chars with
+  the lowercase version preceded by an underscore.
+
+  The first char, if capitalized (eg, PascalCase) is just
+  downcased, no preceding underscore.
+  "
+  (interactive)
+  (save-excursion
+    (let ((bounds (bounds-of-thing-at-point 'word)))
+      (replace-regexp "\\([A-Z]\\)" "_\\1" nil
+                      (1+ (car bounds)) (cdr bounds))
+      (downcase-region (car bounds) (cdr bounds)))))
+
 (global-set-key (kbd "C-x M-w") 'wrap-angular-gettext-string)
 (global-set-key (kbd "C-x M-e") 'wrap-angular-gettext-empty-block)
 (global-set-key (kbd "C-x M-b") 'wrap-angular-gettext-block)
+(global-set-key (kbd "C-x M-l") 'un-camelcase-word-at-point)
 
 ;; some JIRA/STASH integration
 (defun insert-issue-number-from-branch ()
