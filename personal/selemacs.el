@@ -38,10 +38,11 @@
         yaml-mode
         auctex ;; mode for LaTeX
         python
-          sphinx-doc flycheck-pyflakes
-          jedi jedi-direx;;python autocomplete
+          sphinx-doc
+          ;; flycheck-pyflakes
+          ;; jedi jedi-direx;;python autocomplete
         evil ;; vim like keybindings
-            evil-paredit evil-nerd-commenter
+            evil-paredit ;; evil-nerd-commenter
         paredit paredit-everywhere
         surround
         full-ack ;; better than grep-find
@@ -191,6 +192,8 @@ A place is considered 1 character columns."
 (evil-set-initial-state 'haskell-interactive-mode 'emacs)
 (evil-set-initial-state 'magit-blame-mode 'emacs)
 ;; (evil-set-initial-state 'direx 'emacs)  ;; direx-jedi window
+(set-variable 'magit-emacsclient-executable "/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10.9/emacsclient")
+
 
 (evil-set-initial-state 'direx-mode 'emacs)
 
@@ -199,7 +202,7 @@ A place is considered 1 character columns."
 ;;(add-to-list 'evil-disabled-modes-list 'Direx)
 ;;(add-to-list 'evil-disabled-modes-list 'direx)
 
-(evilnc-default-hotkeys)
+;;(evilnc-default-hotkeys)
 
 ;; SETTINGS
 
@@ -214,7 +217,8 @@ A place is considered 1 character columns."
 
 (global-linum-mode 1)
 (global-hl-line-mode 1)
-(global-rainbow-delimiters-mode 1)
+
+(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
 
 ;; (load-theme 'solarized-dark t)
 
@@ -273,7 +277,7 @@ A place is considered 1 character columns."
 
 (add-hook 'erlang-mode-hook 'run-prog-hook)
 
-(add-hook 'after-init-hook 'global-flycheck-mode)
+;; (add-hook 'after-init-hook 'global-flycheck-mode)
 
 ;; (require 'erlang-start)
 
