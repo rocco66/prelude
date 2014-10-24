@@ -26,6 +26,7 @@
         gist               ;; integration with github's gist
         expand-region      ;; helps to select large chunks of code
         ;; language-specific modes
+        git-timemachine
         coffee-mode js2-mode json-mode
         livescript-mode
         haskell-mode
@@ -243,7 +244,7 @@ A place is considered 1 character columns."
                     space-before-tab space-after-tab
                     indentation))
 ;; nice dot-spaces colors
-(set-face-attribute 'whitespace-space nil :background nil :foreground "gray30")
+(set-face-attribute 'whitespace-space nil :background nil :foreground "gray25")
 (global-whitespace-mode 1)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
